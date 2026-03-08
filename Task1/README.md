@@ -55,15 +55,15 @@ graph TD
 
     subgraph "Контекст: Физический сервер (Windows Server)"
         direction TB
-        AD("Active Directory (LDAP)\nАутентификация")
+        AD("Active Directory (LDAP) Аутентификация")
         FS("Файловый сервер (SMB/NFS)")
     end
 
     subgraph "Файловая система"
         direction LR
-        Journal("Хранилище: Журналы приёма\n(Excel-файлы)")
-        PatientsList("Хранилище: Список пациентов\n(Patients.xlsx)")
-        MedCards("Хранилище: Медицинские карты\n(Папки по пациенту: .pdf, .jpg)")
+        Journal("Хранилище: Журналы приёма (Excel-файлы)")
+        PatientsList("Хранилище: Список пациентов (Patients.xlsx)")
+        MedCards("Хранилище: Медицинские карты (Папки по пациенту: .pdf, .jpg)")
     end
 
     Patient -->|"1.1 Сообщает ПДн (ФИО, тел.)"| Admin
@@ -112,10 +112,10 @@ graph TD
 
     subgraph "Физический сервер"
         KKM("ККМ")
-        DB("Хранилище: 1С:Бухгалтерия\n(Файловый режим)")
+        DB("Хранилище: 1С:Бухгалтерия (Файловый режим)")
     end
 
-    CashLog("Хранилище: Журнал кассира\n(Excel-файл)")
+    CashLog("Хранилище: Журнал кассира (Excel-файл)")
 
     Patient -->|"1.1 Оплата (наличные/карта)"| Cashier
     Cashier -->|"1.2 Пробивает чек (TCP/IP + OLE)"| KKM
@@ -158,8 +158,8 @@ graph TD
     Lab("Лаборатория")
 
     subgraph "Файловая система"
-        LabRegistry("Хранилище: Реестры анализов\n(Excel-файлы по датам)")
-        MedCards("Хранилище: Медицинские карты\n(Папки по пациенту)")
+        LabRegistry("Хранилище: Реестры анализов (Excel-файлы по датам)")
+        MedCards("Хранилище: Медицинские карты (Папки по пациенту)")
     end
 
     Doctor -->|"1.1 Выписывает направление (бумага/скан)"| Patient
@@ -246,13 +246,13 @@ graph TD
     Doctor("Врач")
 
     subgraph "Периметр безопасности (DMZ)"
-        API_GW("API Gateway\n(Аутентификация, Rate Limiting)")
+        API_GW("API Gateway (Аутентификация, Rate Limiting)")
     end
 
     subgraph "Сеть приложений (Kubernetes)"
         direction TB
-        PatientPortal("Портал пациента\n(UI)")
-        StaffPortal("Портал сотрудника\n(UI)")
+        PatientPortal("Портал пациента (UI)")
+        StaffPortal("Портал сотрудника (UI)")
         AuthService("Сервис аутентификации")
         AppointmentService("Сервис записи")
         PatientService("CRM: Сервис пациентов")
@@ -260,9 +260,9 @@ graph TD
 
     subgraph "Сеть данных"
         direction TB
-        DB_Patients("PostgreSQL\n(Пациенты, записи)")
-        DB_Audit("PostgreSQL / Elastic\n(Журнал аудита)")
-        FileStorage("MinIO\n(Медицинские файлы)")
+        DB_Patients("PostgreSQL (Пациенты, записи)")
+        DB_Audit("PostgreSQL / Elastic (Журнал аудита)")
+        FileStorage("MinIO (Медицинские файлы)")
     end
 
     Patient -->|"HTTPS: Запись/ЛК"| PatientPortal
@@ -310,21 +310,21 @@ graph TD
     Bookkeeper("Бухгалтер")
 
     subgraph "Периметр безопасности (DMZ)"
-        API_GW_PAY("API Gateway\n(Аутентификация, Лимиты)")
+        API_GW_PAY("API Gateway (Аутентификация, Лимиты)")
     end
 
     subgraph "Сеть приложений (Kubernetes)"
         direction TB
-        PaymentUI("Интерфейс кассира\n(Web UI)")
-        PaymentService("Платёжный шлюз / Сервис\n(Обработка транзакций)")
-        BillingAdapter("Адаптер для 1С\n(Беспловная синхронизация)")
+        PaymentUI("Интерфейс кассира (Web UI)")
+        PaymentService("Платёжный шлюз / Сервис (Обработка транзакций)")
+        BillingAdapter("Адаптер для 1С (Беспловная синхронизация)")
     end
 
     subgraph "Сеть данных / Бэк-офис"
         direction TB
-        1C_Accounting("1С:Бухгалтерия\n(Клиент-серверный режим, SQL)")
-        KKM_API("Контрольно-кассовая машина\n(API)")
-        AuditDB("PostgreSQL / Elastic\n(Журнал аудита платежей)")
+        1C_Accounting("1С:Бухгалтерия (Клиент-серверный режим, SQL)")
+        KKM_API("Контрольно-кассовая машина (API)")
+        AuditDB("PostgreSQL / Elastic (Журнал аудита платежей)")
     end
 
     Patient -->|"Оплата (наличные/карта)"| Cashier
@@ -362,23 +362,23 @@ graph TD
 graph TD
     Patient("Пациент")
     Doctor("Врач")
-    Lab("Лаборатория\n(Внешняя система)")
+    Lab("Лаборатория (Внешняя система)")
 
     subgraph "Периметр безопасности (DMZ)"
-        API_GW_LAB("API Gateway\n(Взаимная TLS аутентификация)")
+        API_GW_LAB("API Gateway (Взаимная TLS аутентификация)")
     end
 
     subgraph "Сеть приложений (Kubernetes)"
         direction TB
-        EMRService("EMR: Сервис мед. карты\n(Заказы, результаты)")
-        IntegrationEngine("Интеграционная шина\n(Camel / Spring Integration)")
+        EMRService("EMR: Сервис мед. карты (Заказы, результаты)")
+        IntegrationEngine("Интеграционная шина (Camel / Spring Integration)")
     end
 
     subgraph "Сеть данных"
         direction TB
-        DB_EMR("PostgreSQL\n(Заказы, результаты)")
-        FileStorage("MinIO\n(Сканы результатов)")
-        AuditDB("PostgreSQL / Elastic\n(Журнал доступа)")
+        DB_EMR("PostgreSQL (Заказы, результаты)")
+        FileStorage("MinIO (Сканы результатов)")
+        AuditDB("PostgreSQL / Elastic (Журнал доступа)")
     end
 
     Doctor -->|"1. Создание заказа на анализ"| EMRService
